@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>9.0</LangVersion>
     </PropertyGroup>
