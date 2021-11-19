@@ -1,11 +1,13 @@
 ﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FluentValidation.AspNet.AsyncValidationFilter
@@ -20,13 +22,16 @@ namespace FluentValidation.AspNet.AsyncValidationFilter
         private readonly ApiBehaviorOptions _apiBehaviorOptions;
         private readonly IValidatorFactory _validatorFactory;
         private readonly ILogger<ModelValidationAsyncActionFilter> _logger;
+        private readonly ModelValidationOptions _modelValidationOptions;
 
         public ModelValidationAsyncActionFilter(
             IOptions<ApiBehaviorOptions> apiBehaviorOptions,
+            IOptions<ModelValidationOptions> modelValidationOptions,
             IValidatorFactory validatorFactory,
             ILogger<ModelValidationAsyncActionFilter> logger)
         {
             _apiBehaviorOptions = apiBehaviorOptions.Value;
+            _modelValidationOptions = modelValidationOptions.Value;
             _validatorFactory = validatorFactory;
             _logger = logger;
         }
@@ -36,6 +41,12 @@ namespace FluentValidation.AspNet.AsyncValidationFilter
         /// </summary>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            if (ShouldIgnoreFilter(context))
+            {
+                await next();
+                return;
+            }
+
             foreach (var (_, value) in context.ActionArguments)
             {
                 if (value == null)
@@ -57,6 +68,20 @@ namespace FluentValidation.AspNet.AsyncValidationFilter
             }
 
             await next();
+        }
+
+        private bool ShouldIgnoreFilter(ActionExecutingContext context)
+        {
+            if (!_modelValidationOptions.OnlyApiController)
+                return false;
+
+            var controllerActionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            if (controllerActionDescriptor == null) return false;
+
+            var hasApiControllerAttribute = controllerActionDescriptor.ControllerTypeInfo
+                .GetCustomAttributes(inherit: true)
+                .Any(x => x.GetType() == typeof(ApiControllerAttribute));
+            return !hasApiControllerAttribute;
         }
 
         private async Task ValidateEnumerableObjectsAsync(object value, ModelStateDictionary modelState)

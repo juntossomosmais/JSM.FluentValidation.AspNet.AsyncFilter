@@ -1,47 +1,54 @@
 using FluentAssertions;
 using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support;
+using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Extensions;
+using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Models;
+using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Startups;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace FluentValidation.AspNet.AsyncValidationFilter.Tests
 {
-    public class ModelValidationActionFilterTests : WebAppFixture<StartupWithValidators>
+    public class ModelValidationActionFilterTests : WebAppFixture<StartupWithDefaultOptions>
     {
+        private const string ControllerWithApiAttributeEndpoint = "WithApiAttribute";
+        private const string ControllerWithoutApiAttributeEndpoint = "WithoutApiAttribute";
+
         private HttpClient Client { get; }
 
         public ModelValidationActionFilterTests() => Client = CreateClient();
 
-        [Fact(DisplayName = "Should return OK when payload is valid")]
-        public async Task ShouldReturnOkWhenTestPayloadIsValid()
+        [Theory(DisplayName = "Should return OK when payload is valid")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_PayloadIsValid_ReturnOk(string controller)
         {
             // Arrange
-            var content = new StringContent(
-                JsonConvert.SerializeObject(new TestPayload { Text = "Test" }), Encoding.UTF8, "application/json");
+            var payload = new TestPayload { Text = "Test" };
+
             // Act
-            var response = await Client.PostAsync("/test-validator", content);
+            var response = await Client.PostAsJsonAsync($"{controller}/test-validator", payload);
 
             // Assert
             response.Should().Be200Ok();
         }
 
-        [Fact(DisplayName = "Should return bad request when payload is invalid")]
-        public async Task ShouldReturnBadRequestWhenTestPayloadIsInvalid()
+        [Theory(DisplayName = "Should return bad request when payload is invalid")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_PayloadIsInvalid_ReturnBadRequest(string controller)
         {
             // Arrange
-            var content = new StringContent(
-                JsonConvert.SerializeObject(new TestPayload { Text = "" }), Encoding.UTF8, "application/json");
+            var payload = new TestPayload { Text = "" };
+
             // Act
-            var response = await Client.PostAsync("/test-validator", content);
+            var response = await Client.PostAsJsonAsync($"{controller}/test-validator", payload);
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var responseDetails = JsonConvert.DeserializeObject<ValidationProblemDetails>(responseJson);
+            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
             responseDetails.Title.Should().Be("One or more validation errors occurred.");
             responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
@@ -49,24 +56,24 @@ namespace FluentValidation.AspNet.AsyncValidationFilter.Tests
             });
         }
 
-        [Fact(DisplayName = "Should return bad request when objects in collection are invalid")]
-        public async Task ShouldReturnOkWhenObjectsInCollectionInValid()
+        [Theory(DisplayName = "Should return bad request when objects in collection are invalid")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_ObjectsInCollectionInValid_ReturnBadRequest(string controller)
         {
             // Arrange
-            var content = new StringContent(
-                JsonConvert.SerializeObject(
-                    new[]
-                    {
-                        new TestPayload { Text = "" },
-                        new TestPayload { Text = "" }
-                    }), Encoding.UTF8, "application/json");
+            var payload = new[]
+            {
+                new TestPayload { Text = "" },
+                new TestPayload { Text = "" }
+            };
+
             // Act
-            var response = await Client.PostAsync("/test-validator-collection", content);
+            var response = await Client.PostAsJsonAsync($"{controller}/test-validator-collection", payload);
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var responseDetails = JsonConvert.DeserializeObject<ValidationProblemDetails>(responseJson);
+            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
             responseDetails.Title.Should().Be("One or more validation errors occurred.");
             responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
@@ -74,19 +81,20 @@ namespace FluentValidation.AspNet.AsyncValidationFilter.Tests
             });
         }
 
-        [Fact(DisplayName = "Should return ok when collection and objects are valid")]
-        public async Task ShouldReturnOkWhenObjectsInCollectionAreValid()
+        [Theory(DisplayName = "Should return ok when collection and objects are valid")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_ObjectsInCollectionAreValid_ReturnOk(string controller)
         {
             // Arrange
-            var content = new StringContent(
-                JsonConvert.SerializeObject(
-                    new[]
-                    {
-                        new TestPayload { Text = "Test" },
-                        new TestPayload { Text = "Test" }
-                    }), Encoding.UTF8, "application/json");
+            var payload = new[]
+            {
+                new TestPayload { Text = "Test" },
+                new TestPayload { Text = "Test" }
+            };
+            
             // Act
-            var response = await Client.PostAsync("/test-validator-collection", content);
+            var response = await Client.PostAsJsonAsync($"{controller}/test-validator-collection", payload);
 
             // Assert
             response
@@ -94,25 +102,25 @@ namespace FluentValidation.AspNet.AsyncValidationFilter.Tests
                 .Be200Ok();
         }
 
-        [Fact(DisplayName = "Should return bad request when collection is valid")]
-        public async Task ShouldReturnBadRequestWhenCollectionIsInvalid()
+        [Theory(DisplayName = "Should return bad request when collection is valid")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_CollectionIsInvalid_ReturnBadRequest(string controller)
         {
             // Arrange
-            var content = new StringContent(
-                JsonConvert.SerializeObject(
-                    new[]
-                    {
-                        new TestPayload { Text = "Test" },
-                        new TestPayload { Text = "Test" },
-                        new TestPayload { Text = "Test" }
-                    }), Encoding.UTF8, "application/json");
+            var payload = new[]
+            {
+                new TestPayload { Text = "Test" },
+                new TestPayload { Text = "Test" },
+                new TestPayload { Text = "Test" }
+            };
+
             // Act
-            var response = await Client.PostAsync("/test-validator-collection", content);
+            var response = await Client.PostAsJsonAsync($"{controller}/test-validator-collection", payload);
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var responseDetails = JsonConvert.DeserializeObject<ValidationProblemDetails>(responseJson);
+            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
             responseDetails.Title.Should().Be("One or more validation errors occurred.");
             responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
@@ -120,25 +128,25 @@ namespace FluentValidation.AspNet.AsyncValidationFilter.Tests
             });
         }
 
-        [Fact(DisplayName = "Should not validate objects when collection is invalid")]
-        public async Task ShouldNotValidateObjectsWhenCollectionIsInvalid()
+        [Theory(DisplayName = "Should not validate objects when collection is invalid")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_CollectionIsInvalid_ShouldNotValidateObjects(string controller)
         {
             // Arrange
-            var content = new StringContent(
-                JsonConvert.SerializeObject(
-                    new[]
-                    {
-                        new TestPayload { Text = "" },
-                        new TestPayload { Text = "" },
-                        new TestPayload { Text = "" }
-                    }), Encoding.UTF8, "application/json");
+            var payload = new[]
+            {
+                new TestPayload { Text = "" },
+                new TestPayload { Text = "" },
+                new TestPayload { Text = "" }
+            };
+
             // Act
-            var response = await Client.PostAsync("/test-validator-collection", content);
+            var response = await Client.PostAsJsonAsync($"{controller}/test-validator-collection", payload);
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseJson = await response.Content.ReadAsStringAsync();
-            var responseDetails = JsonConvert.DeserializeObject<ValidationProblemDetails>(responseJson);
+            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
             responseDetails.Title.Should().Be("One or more validation errors occurred.");
             responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
