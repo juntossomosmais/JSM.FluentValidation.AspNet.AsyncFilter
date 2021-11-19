@@ -7,7 +7,7 @@ namespace FluentValidation.AspNet.AsyncValidationFilter
     {
         /// <summary>
         /// Determines if the filter will be applied only to controllers with the
-        /// ApiControllerAttribute
+        /// ApiControllerAttribute.
         /// </summary>
         public bool OnlyApiController { get; set; } = false;
     }
