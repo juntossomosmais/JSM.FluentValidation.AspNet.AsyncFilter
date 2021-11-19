@@ -1,5 +1,8 @@
 namespace FluentValidation.AspNet.AsyncValidationFilter
 {
+    /// <summary>
+    /// Options used to configure behavior for the <see cref="ModelValidationAsyncActionFilter"/>.
+    /// </summary>
     public class ModelValidationOptions
     {
         /// <summary>
