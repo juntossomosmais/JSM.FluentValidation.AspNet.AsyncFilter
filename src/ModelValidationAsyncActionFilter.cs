@@ -47,18 +47,7 @@ namespace FluentValidation.AspNet.AsyncValidationFilter
                 return;
             }
 
-            foreach (var (_, value) in context.ActionArguments)
-            {
-                if (value == null)
-                    continue;
-
-                await ValidateAsync(value, context.ModelState);
-
-                // if an error is found or the type it not enumerable, short circuit the loop
-                if (!context.ModelState.IsValid || !TypeIsEnumerable(value.GetType())) continue;
-
-                await ValidateEnumerableObjectsAsync(value, context.ModelState);
-            }
+            await ValidateActionArguments(context);
 
             if (!context.ModelState.IsValid)
             {
@@ -68,6 +57,22 @@ namespace FluentValidation.AspNet.AsyncValidationFilter
             }
 
             await next();
+        }
+
+        private async Task ValidateActionArguments(ActionExecutingContext context)
+        {
+            foreach (var (_, value) in context.ActionArguments)
+            {
+                if (value is null)
+                    continue;
+
+                await ValidateAsync(value, context.ModelState);
+
+                // if an error is found or the type it not enumerable, short circuit the loop
+                if (!context.ModelState.IsValid || !TypeIsEnumerable(value.GetType())) continue;
+
+                await ValidateEnumerableObjectsAsync(value, context.ModelState);
+            }
         }
 
         private bool ShouldIgnoreFilter(ActionExecutingContext context)
@@ -94,6 +99,8 @@ namespace FluentValidation.AspNet.AsyncValidationFilter
 
             foreach (var item in (IEnumerable)value)
             {
+                if (item is null)
+                    continue;
                 var context = new ValidationContext<object>(item);
                 var result = await validator.ValidateAsync(context);
 
