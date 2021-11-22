@@ -12,5 +12,8 @@ namespace FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Controller
 
         [HttpPost("test-validator-collection")]
         public IActionResult PostCollection([FromBody] IEnumerable<TestPayload> request) => Ok();
+
+        [HttpPost("without-validation")]
+        public IActionResult Post([FromBody] TestPayloadWithoutValidation request) => Ok();
     }
 }

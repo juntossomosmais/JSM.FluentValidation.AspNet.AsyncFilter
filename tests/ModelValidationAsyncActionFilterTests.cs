@@ -153,5 +153,20 @@ namespace FluentValidation.AspNet.AsyncValidationFilter.Tests
                 { "Count", new[] { "Should be less than 3!" } }
             });
         }
+
+        [Theory(DisplayName = "Should return OK when the request class does not have a validator")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_ClassWithoutValidator_ReturnOk(string controller)
+        {
+            // Arrange
+            var payload = new TestPayloadWithoutValidation { Text = "" };
+
+            // Act
+            var response = await Client.PostAsJsonAsync($"{controller}/without-validation", payload);
+
+            // Assert
+            response.Should().Be200Ok();
+        }
     }
 }
