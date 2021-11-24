@@ -39,3 +39,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./scripts/start-sonarcloud.sh ${{ secrets.SONAR_TOKEN }} ${{ github.sha }}
+      - name: Generate package
+        run: |
+          dotnet pack ./src -c Release -o out -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
+      - name: Push nuget
+        run: |
+          dotnet nuget push out/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ secrets.NUGET_SERVER }} --skip-duplicate

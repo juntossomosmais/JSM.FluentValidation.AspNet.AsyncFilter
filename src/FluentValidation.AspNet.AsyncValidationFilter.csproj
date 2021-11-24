@@ -4,6 +4,16 @@
         <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
         <Nullable>enable</Nullable>
         <LangVersion>9.0</LangVersion>
+        <PackageId>FluentValidation.AspNet.AsyncValidationFilter</PackageId>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Version>1.0.0</Version>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Authors>Juntos Somos Mais</Authors>
+        <Description>ASP.NET filter that performs async validation using FluentValidation</Description>
+        <RepositoryUrl>https://github.com/juntossomosmais/FluentValidation.AspNet.AsyncValidationFilter</RepositoryUrl>
+        <PackageTags>aspnet;fluentvalidation;async;filter</PackageTags>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
     <ItemGroup>
