@@ -10,7 +10,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Authors>Juntos Somos Mais</Authors>
         <Description>ASP.NET filter that performs async validation using FluentValidation</Description>
-        <RepositoryUrl>https://github.com/juntossomosmais/FluentValidation.AspNet.AsyncValidationFilter</RepositoryUrl>
+        <RepositoryUrl>https://github.com/juntossomosmais/JSM.FluentValidation.AspNet.AsyncFilter</RepositoryUrl>
         <PackageTags>aspnet;fluentvalidation;async;filter</PackageTags>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
