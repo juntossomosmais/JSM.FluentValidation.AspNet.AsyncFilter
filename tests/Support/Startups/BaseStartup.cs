@@ -1,10 +1,11 @@
-﻿using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Models;
+﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 
-namespace FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Startups
+namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups
 {
     public abstract class BaseStartup
     {

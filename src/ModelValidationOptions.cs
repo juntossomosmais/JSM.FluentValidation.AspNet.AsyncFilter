@@ -1,4 +1,4 @@
-namespace FluentValidation.AspNet.AsyncValidationFilter
+namespace JSM.FluentValidation.AspNet.AsyncFilter
 {
     /// <summary>
     /// Options used to configure behavior for the <see cref="ModelValidationAsyncActionFilter"/>.

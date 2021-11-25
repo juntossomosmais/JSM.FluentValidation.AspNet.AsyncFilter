@@ -1,15 +1,15 @@
 using FluentAssertions;
 using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support;
-using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Extensions;
-using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Models;
-using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Startups;
+using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Extensions;
+using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models;
+using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FluentValidation.AspNet.AsyncValidationFilter.Tests
+namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 {
     public class ModelValidationActionFilterTests : WebAppFixture<StartupWithDefaultOptions>
     {

@@ -1,4 +1,5 @@
-﻿using FluentValidation.AspNetCore;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -10,7 +11,7 @@ using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FluentValidation.AspNet.AsyncValidationFilter
+namespace JSM.FluentValidation.AspNet.AsyncFilter
 {
     /// <summary>
     /// Validates values before the controller's action is invoked (before the route is executed).

@@ -1,4 +1,4 @@
-﻿namespace FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Models
+﻿namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models
 {
     public class TestPayloadWithoutValidation
     {
