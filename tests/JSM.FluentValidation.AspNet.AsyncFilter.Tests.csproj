@@ -36,7 +36,7 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\src\FluentValidation.AspNet.AsyncValidationFilter.csproj" />
+      <ProjectReference Include="..\src\JSM.FluentValidation.AspNet.AsyncFilter.csproj" />
     </ItemGroup>
 
 </Project>

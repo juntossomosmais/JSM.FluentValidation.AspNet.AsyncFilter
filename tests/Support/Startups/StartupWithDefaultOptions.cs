@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Startups
+namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups
 {
     public class StartupWithDefaultOptions : BaseStartup
     {

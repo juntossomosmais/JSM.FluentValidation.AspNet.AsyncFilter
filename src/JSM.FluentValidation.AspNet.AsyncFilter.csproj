@@ -4,7 +4,7 @@
         <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
         <Nullable>enable</Nullable>
         <LangVersion>9.0</LangVersion>
-        <PackageId>FluentValidation.AspNet.AsyncValidationFilter</PackageId>
+        <PackageId>JSM.FluentValidation.AspNet.AsyncFilter</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Version>1.0.0-rc</Version>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>

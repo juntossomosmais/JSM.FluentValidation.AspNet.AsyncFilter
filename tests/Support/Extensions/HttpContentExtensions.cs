@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Extensions
+namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Extensions
 {
     public static class HttpContentExtensions
     {

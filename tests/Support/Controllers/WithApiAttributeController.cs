@@ -1,8 +1,8 @@
-﻿using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Models;
+﻿using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Controllers
+namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Controllers
 {
     [ApiController, Route("[controller]")]
     public class WithApiAttributeController : ControllerBase

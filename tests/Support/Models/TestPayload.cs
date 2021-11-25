@@ -1,6 +1,7 @@
+using FluentValidation;
 using System.Collections.Generic;
 
-namespace FluentValidation.AspNet.AsyncValidationFilter.Tests.Support.Models
+namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models
 {
     public class TestPayload
     {
