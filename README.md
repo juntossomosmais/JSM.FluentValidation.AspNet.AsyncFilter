@@ -1,6 +1,6 @@
-# FluentValidation.AspNet.AsyncValidationFilter
+# JSM.FluentValidation.AspNet.AsyncValidationFilter
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=juntossomosmais_FluentValidation.AspNet.AsyncValidationFilter&metric=alert_status&token=d3b41f78734a4b7551bb7e9452cdfd3847578626)](https://sonarcloud.io/summary/new_code?id=juntossomosmais_FluentValidation.AspNet.AsyncValidationFilter)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=juntossomosmais_FluentValidation.AspNet.AsyncValidationFilter&metric=alert_status&token=d3b41f78734a4b7551bb7e9452cdfd3847578626)](https://sonarcloud.io/summary/new_code?id=juntossomosmais_FluentValidation.AspNet.AsyncFilter)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=juntossomosmais_FluentValidation.AspNet.AsyncValidationFilter&metric=coverage&token=d3b41f78734a4b7551bb7e9452cdfd3847578626)](https://sonarcloud.io/summary/new_code?id=juntossomosmais_FluentValidation.AspNet.AsyncValidationFilter)
 [![Nuget](https://img.shields.io/nuget/v/JSM.FluentValidation.AspNet.AsyncFilter)](https://www.nuget.org/packages/JSM.FluentValidation.AspNet.AsyncFilter/)
 
