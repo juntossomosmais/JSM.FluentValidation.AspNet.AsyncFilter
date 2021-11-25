@@ -6,7 +6,7 @@
         <LangVersion>9.0</LangVersion>
         <PackageId>JSM.FluentValidation.AspNet.AsyncFilter</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.0.0-rc</Version>
+        <Version>1.0.0</Version>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Authors>Juntos Somos Mais</Authors>
         <Description>ASP.NET filter that performs async validation using FluentValidation</Description>

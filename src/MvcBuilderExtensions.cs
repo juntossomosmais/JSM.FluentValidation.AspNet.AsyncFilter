@@ -4,16 +4,16 @@ using System;
 namespace JSM.FluentValidation.AspNet.AsyncFilter
 {
     /// <summary>
-    ///
+    /// Extensions for configuring MVC using an IMvcBuilder.
     /// </summary>
     public static class MvcBuilderExtensions
     {
         /// <summary>
-        ///
+        /// Add the ModelValidationAsyncActionFilter as a MVC Filter
         /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="optionsAction"></param>
-        /// <returns></returns>
+        /// <param name="builder">The IMvcBuilder</param>
+        /// <param name="optionsAction">A ModelValidationOptions options action</param>
+        /// <returns>The IMvcBuilder</returns>
         public static IMvcBuilder AddModelValidationAsyncActionFilter(this IMvcBuilder builder,
             Action<ModelValidationOptions> optionsAction)
         {
@@ -25,10 +25,10 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
         }
 
         /// <summary>
-        ///
+        /// Add the ModelValidationAsyncActionFilter as a MVC Filter
         /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
+        /// <param name="builder">The IMvcBuilder</param>
+        /// <returns>The IMvcBuilder</returns>
         public static IMvcBuilder AddModelValidationAsyncActionFilter(this IMvcBuilder builder)
         {
             return builder
