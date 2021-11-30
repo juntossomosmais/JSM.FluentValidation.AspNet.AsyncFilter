@@ -15,7 +15,7 @@ This library provides an ASP.NET filter that performs async Validation using Flu
 To use the filter, first install the NuGet package:
 
 ```
-dotnet add package FluentValidation.AspNetCore
+dotnet add package JSM.FluentValidation.AspNet.AsyncFilter
 ```
 
 Then, it's necessary to register the filter on the `ConfigureServices` portion of the `Startup.cs`.
