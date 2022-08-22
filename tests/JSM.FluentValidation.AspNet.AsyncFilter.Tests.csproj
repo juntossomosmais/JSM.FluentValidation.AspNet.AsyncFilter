@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
-        <Nullable>enable</Nullable>
+        <TargetFramework>net6.0</TargetFramework>
         <LangVersion>9.0</LangVersion>
         <IsPackable>false</IsPackable>
     </PropertyGroup>
@@ -10,7 +9,9 @@
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
         <PackageReference Include="FluentAssertions.Web" Version="1.0.133" />
-        <PackageReference Include="FluentValidation" Version="9.5.0" />
+        <PackageReference Include="FluentValidation" Version="11.2.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.8" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -23,18 +24,6 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
-        <PackageReference Include="Microsoft.AspNetCore.App">
-            <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
-            <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
-        </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp2.2'">
-        <FrameworkReference Include="Microsoft.AspNetCore.App" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.21" />
-    </ItemGroup>
-    
     <ItemGroup>
       <ProjectReference Include="..\src\JSM.FluentValidation.AspNet.AsyncFilter.csproj" />
     </ItemGroup>

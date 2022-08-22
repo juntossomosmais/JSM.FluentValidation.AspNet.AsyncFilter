@@ -5,7 +5,7 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models
 {
     public class TestPayload
     {
-        public string? Text { get; set; }
+        public string Text { get; set; }
     }
 
     public class TestPayloadValidator : AbstractValidator<TestPayload>

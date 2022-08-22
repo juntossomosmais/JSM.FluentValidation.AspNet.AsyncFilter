@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
-        <Nullable>enable</Nullable>
+        <TargetFramework>net6.0</TargetFramework>
         <LangVersion>9.0</LangVersion>
         <PackageId>JSM.FluentValidation.AspNet.AsyncFilter</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Version>1.0.0</Version>
+        <Version>2.0.0</Version>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Authors>Juntos Somos Mais</Authors>
         <Description>ASP.NET filter that performs async validation using FluentValidation</Description>
@@ -17,17 +16,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="9.5.0" />
-        <PackageReference Include="FluentValidation.AspNetCore" Version="9.5.0" />
-    </ItemGroup>
-
-    <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.2'">
-        <PackageReference Include="Microsoft.AspNetCore.App">
-            <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
-            <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
-        </PackageReference>
-    </ItemGroup>
-    <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp2.2'">
+        <PackageReference Include="FluentValidation" Version="11.2.0" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="11.2.1" />
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 

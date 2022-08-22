@@ -7,6 +7,9 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Controllers
     [Route("[controller]")]
     public class WithoutApiAttributeController : ControllerBase
     {
+        [HttpGet("test-validator")]
+        public IActionResult Get([FromQuery] TestPayload request) => Ok();
+
         [HttpPost("test-validator")]
         public IActionResult Post([FromBody] TestPayload request) => Ok();
 
