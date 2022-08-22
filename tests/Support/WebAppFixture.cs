@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 
-namespace FluentValidation.AspNet.AsyncValidationFilter.Tests.Support
+namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support
 {
     public class WebAppFixture<TStartup> : WebApplicationFactory<TStartup>
         where TStartup : class

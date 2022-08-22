@@ -10,7 +10,6 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddScoped<IValidatorFactory>(s => new ServiceProviderValidatorFactory(s))
                 .AddValidatorsFromAssemblyContaining<TestPayloadValidator>();;
         }
 

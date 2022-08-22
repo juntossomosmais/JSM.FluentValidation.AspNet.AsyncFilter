@@ -1,5 +1,5 @@
 using FluentAssertions;
-using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support;
+using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Extensions;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups;
