@@ -21,19 +21,26 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
     public class ModelValidationAsyncActionFilter : IAsyncActionFilter
     {
         private readonly ApiBehaviorOptions _apiBehaviorOptions;
-        private readonly IValidatorFactory _validatorFactory;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<ModelValidationAsyncActionFilter> _logger;
         private readonly ModelValidationOptions _modelValidationOptions;
 
+        /// <summary>
+        /// Create a new model validation async action filter
+        /// </summary>
+        /// <param name="apiBehaviorOptions"></param>
+        /// <param name="modelValidationOptions"></param>
+        /// <param name="serviceProvider"></param>
+        /// <param name="logger"></param>
         public ModelValidationAsyncActionFilter(
             IOptions<ApiBehaviorOptions> apiBehaviorOptions,
             IOptions<ModelValidationOptions> modelValidationOptions,
-            IValidatorFactory validatorFactory,
+            IServiceProvider serviceProvider,
             ILogger<ModelValidationAsyncActionFilter> logger)
         {
             _apiBehaviorOptions = apiBehaviorOptions.Value;
             _modelValidationOptions = modelValidationOptions.Value;
-            _validatorFactory = validatorFactory;
+            _serviceProvider = serviceProvider;
             _logger = logger;
         }
 
@@ -93,7 +100,7 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
         private async Task ValidateEnumerableObjectsAsync(object value, ModelStateDictionary modelState)
         {
             var underlyingType = value.GetType().GenericTypeArguments[0];
-            var validator = _validatorFactory.GetValidator(underlyingType);
+            var validator = GetValidator(underlyingType);
 
             if (validator == null)
                 return;
@@ -111,7 +118,7 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
 
         private async Task ValidateAsync(object value, ModelStateDictionary modelState)
         {
-            var validator = _validatorFactory.GetValidator(value.GetType());
+            var validator = GetValidator(value.GetType());
 
             if (validator == null)
                 return;
@@ -119,6 +126,13 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
             var context = new ValidationContext<object>(value);
             var result = await validator.ValidateAsync(context);
             result.AddToModelState(modelState, string.Empty);
+        }
+
+        private IValidator GetValidator(Type targetType)
+        {
+            var validatorType = typeof(IValidator<>).MakeGenericType(targetType);
+            var validator = (IValidator)_serviceProvider.GetService(validatorType);
+            return validator;
         }
 
         private static bool TypeIsEnumerable(Type type) =>

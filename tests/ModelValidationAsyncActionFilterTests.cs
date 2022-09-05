@@ -1,5 +1,5 @@
 using FluentAssertions;
-using FluentValidation.AspNet.AsyncValidationFilter.Tests.Support;
+using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Extensions;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups;
@@ -33,6 +33,27 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 
             // Assert
             response.Should().Be200Ok();
+        }
+
+        [Theory(DisplayName = "Should return bad request when payload is invalid on a GET endpoint")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_GetEndpointWithInvalidPayload_ReturnBadRequest(string controller)
+        {
+            // Arrange
+            var payload = new TestPayload { Text = "" };
+
+            // Act
+            var response = await Client.GetAsync($"{controller}/test-validator?text=");
+
+            // Assert
+            response.Should().Be400BadRequest();
+            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            responseDetails.Title.Should().Be("One or more validation errors occurred.");
+            responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
+            {
+                { "Text", new[] { "Text can't be null" } }
+            });
         }
 
         [Theory(DisplayName = "Should return bad request when payload is invalid")]

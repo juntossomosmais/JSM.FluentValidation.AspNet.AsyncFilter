@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups
 {
@@ -8,13 +7,8 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
-#if NETCOREAPP2_2
-            services
-                .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-#else
             services
                 .AddControllers()
-#endif
                 .AddModelValidationAsyncActionFilter(options =>
                 {
                     options.OnlyApiController = true;
