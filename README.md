@@ -26,13 +26,14 @@ services
     .AddModelValidationAsyncActionFilter();
 ```
 
-Also, it's required to register the `IValidatorFactory` and the `FluentValidation` validators:
+The next step is to register the validators of the API:
 
 ```c#
 services
-    .AddScoped<IValidatorFactory>(s => new ServiceProviderValidatorFactory(s))
     .AddScoped<IValidator<MyClass>, MyClassValidator>>();
 ```
+
+Or use [automatic registration](https://docs.fluentvalidation.net/en/latest/di.html#automatic-registration).
 
 ## Customization
 
