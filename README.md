@@ -1,4 +1,4 @@
-# JSM.FluentValidation.AspNet.AsyncValidationFilter
+# JSM.FluentValidation.AspNet.AsyncFilter
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=juntossomosmais_FluentValidation.AspNet.AsyncValidationFilter&metric=alert_status&token=d3b41f78734a4b7551bb7e9452cdfd3847578626)](https://sonarcloud.io/summary/new_code?id=juntossomosmais_FluentValidation.AspNet.AsyncFilter)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=juntossomosmais_FluentValidation.AspNet.AsyncValidationFilter&metric=coverage&token=d3b41f78734a4b7551bb7e9452cdfd3847578626)](https://sonarcloud.io/summary/new_code?id=juntossomosmais_FluentValidation.AspNet.AsyncValidationFilter)
@@ -26,13 +26,14 @@ services
     .AddModelValidationAsyncActionFilter();
 ```
 
-Also, it's required to register the `IValidatorFactory` and the `FluentValidation` validators:
+The next step is to register the validators of the API:
 
 ```c#
 services
-    .AddScoped<IValidatorFactory>(s => new ServiceProviderValidatorFactory(s))
     .AddScoped<IValidator<MyClass>, MyClassValidator>>();
 ```
+
+Or use [automatic registration](https://docs.fluentvalidation.net/en/latest/di.html#automatic-registration).
 
 ## Customization
 
