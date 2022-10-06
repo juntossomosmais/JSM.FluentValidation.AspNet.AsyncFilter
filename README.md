@@ -48,3 +48,7 @@ If also possible to apply the filter only to controllers that contains the [`Api
 ```
 
 This way, other controllers requests without the attribute will be ignored.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
