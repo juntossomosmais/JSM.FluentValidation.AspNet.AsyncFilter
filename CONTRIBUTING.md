@@ -14,7 +14,7 @@ Follow the steps below if you want to contribute with `JSM.FluentValidation.AspN
 - To contribute, you must create a `fork` from this repo;
 - Then, you must create your commits and push them in your forked repo;
 - It's recommended to use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) in your commit summary;
-- Alter all commits, you should open a PR from your branch in the forked repo to the source repo `main` branch;
+- After all commits, you should open a PR from your branch in the forked repo to the source repo `main` branch;
 - Maintainers will review your pull request ASAP and they can approve it or request updates;
 
 ## Contributing with issues or questions
