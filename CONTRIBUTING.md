@@ -6,7 +6,7 @@ The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `S
 
 This repository uses [trunk based development](https://github.com/cgbystrom/awesome-trunk-based-dev). The picture below depicts what you must follow to properly contribute to this project:
 
-![git-workflow](./docs/git-workflow.png)
+![git-workflow](./assets/git-workflow.png)
 
 Follow the steps below if you want to contribute with `JSM.FluentValidation.AspNet.AsyncFilter`:
 
