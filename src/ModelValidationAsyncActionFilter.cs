@@ -131,7 +131,7 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
             result.AddToModelState(modelState, errorCode);
         }
 
-        private string GetErrorCodeWithPrefixRuleType(ValidationResult result) => 
+        private static string GetErrorCodeWithPrefixRuleType(ValidationResult result) => 
             result.Errors.LastOrDefault(errorCode => errorCode.ErrorCode.Contains(RuleTypeConst.Prefix))?.ErrorCode;
 
         private IValidator GetValidator(Type targetType)
