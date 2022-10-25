@@ -10,6 +10,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.Results;
 
 namespace JSM.FluentValidation.AspNet.AsyncFilter
 {
@@ -125,8 +126,13 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
 
             var context = new ValidationContext<object>(value);
             var result = await validator.ValidateAsync(context);
-            result.AddToModelState(modelState, string.Empty);
+            var errorCode = GetErrorCodeWithPrefixType(result);
+            
+            result.AddToModelState(modelState, errorCode);
         }
+
+        private string GetErrorCodeWithPrefixType(ValidationResult result) => 
+            result.Errors.LastOrDefault(errorCode => errorCode.ErrorCode.Contains(RuleTypeConst.Prefix))?.ErrorCode;
 
         private IValidator GetValidator(Type targetType)
         {
