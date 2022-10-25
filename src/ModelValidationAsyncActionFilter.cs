@@ -126,12 +126,12 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
 
             var context = new ValidationContext<object>(value);
             var result = await validator.ValidateAsync(context);
-            var errorCode = GetErrorCodeWithPrefixType(result);
+            var errorCode = GetErrorCodeWithPrefixRuleType(result);
             
             result.AddToModelState(modelState, errorCode);
         }
 
-        private string GetErrorCodeWithPrefixType(ValidationResult result) => 
+        private string GetErrorCodeWithPrefixRuleType(ValidationResult result) => 
             result.Errors.LastOrDefault(errorCode => errorCode.ErrorCode.Contains(RuleTypeConst.Prefix))?.ErrorCode;
 
         private IValidator GetValidator(Type targetType)
