@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 
 namespace JSM.FluentValidation.AspNet.AsyncFilter
 {
@@ -19,43 +16,28 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
         public void Configure(ApiBehaviorOptions options)
         {
             _options.Configure(options);
+            
             options.InvalidModelStateResponseFactory = context =>
-            {
-                var problemDetailsFactory = context.HttpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
-                return ConfigureValidationResponseFormat(problemDetailsFactory, context);
-            };
+                ConfigureValidationResponseFormat(context);
         }
 
-        private static IActionResult ConfigureValidationResponseFormat(ProblemDetailsFactory problemDetailsFactory, ActionContext context)
+        private static IActionResult ConfigureValidationResponseFormat(ActionContext context)
         {
-            var problemDetails = problemDetailsFactory.CreateValidationProblemDetails(context.HttpContext, context.ModelState);
-            if (problemDetails.Status == (int)HttpStatusCode.BadRequest)
+            var response = new ErrorResponse
             {
-                var response = new ErrorResponse
-                {
-                    Error = new Dictionary<string, string[]>(),
-                    Type = context.ModelState.GetLastRuleType()
-                };
+                Error = new Dictionary<string, string[]>(),
+                Type = context.ModelState.GetLastRuleType()
+            };
 
-                foreach (var (key, value) in context.ModelState.Where(x => x.Value.Errors.Any()))
-                {
-                    var errorKey = key.Contains(RuleTypeConst.Prefix) ? RuleTypeConst.KeyErrorDefault : key;
-                    var errorMessage = value.Errors.Select(e => e.ErrorMessage).ToArray();
-                    response.Error.Add(errorKey, errorMessage);
-                }
-
-                return new BadRequestObjectResult(response);
+            foreach (var (key, value) in context.ModelState.Where(x => x.Value.Errors.Any()))
+            {
+                var errorKey = key.Contains(RuleTypeConst.Prefix) ? RuleTypeConst.KeyErrorDefault : key;
+                var errorMessage = value.Errors.Select(e => e.ErrorMessage).ToArray();
+                response.Error.Add(errorKey, errorMessage);
             }
 
-            return new ObjectResult(problemDetails)
-            {
-                StatusCode = problemDetails.Status,
-                ContentTypes =
-                {
-                    "application/problem+json",
-                    "application/problem+xml",
-                }
-            };
+            return new BadRequestObjectResult(response);
+
         }
     }
 }
