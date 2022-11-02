@@ -41,16 +41,15 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
         public async Task OnActionExecutionAsync_GetEndpointWithInvalidPayload_ReturnBadRequest(string controller)
         {
             // Arrange
-            var payload = new TestPayload { Text = "" };
 
             // Act
             var response = await Client.GetAsync($"{controller}/test-validator?text=");
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            responseDetails.Title.Should().Be("One or more validation errors occurred.");
-            responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
+            var responseDetails = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            responseDetails.Type.Should().Be(RuleTypeConst.TypeDefault);
+            responseDetails.Error.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
                 { "Text", new[] { "Text can't be null" } }
             });
@@ -69,9 +68,9 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            responseDetails.Title.Should().Be("One or more validation errors occurred.");
-            responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
+            var responseDetails = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            responseDetails.Type.Should().Be(RuleTypeConst.TypeDefault);
+            responseDetails.Error.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
                 { "Text", new[] { "Text can't be null" } }
             });
@@ -94,9 +93,9 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            responseDetails.Title.Should().Be("One or more validation errors occurred.");
-            responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
+            var responseDetails = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            responseDetails.Type.Should().Be(RuleTypeConst.TypeDefault);
+            responseDetails.Error.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
                 { "Text", new[] { "Text can't be null", "Text can't be null" } }
             });
@@ -141,9 +140,9 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            responseDetails.Title.Should().Be("One or more validation errors occurred.");
-            responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
+            var responseDetails = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            responseDetails.Type.Should().Be(RuleTypeConst.TypeDefault);
+            responseDetails.Error.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
                 { "Count", new[] { "Should be less than 3!" } }
             });
@@ -167,9 +166,9 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            responseDetails.Title.Should().Be("One or more validation errors occurred.");
-            responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
+            var responseDetails = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            responseDetails.Type.Should().Be(RuleTypeConst.TypeDefault);
+            responseDetails.Error.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
                 { "Count", new[] { "Should be less than 3!" } }
             });
