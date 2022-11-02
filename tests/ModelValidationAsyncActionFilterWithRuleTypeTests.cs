@@ -42,11 +42,11 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 
             // Assert
             response.Should().Be400BadRequest();
-            var responseDetails = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            responseDetails.Title.Should().Be("One or more validation errors occurred.");
-            responseDetails.Errors.Should().BeEquivalentTo(new Dictionary<string, string[]>
+            var responseDetails = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+            responseDetails.Type.Should().Be("SOME_RULE");
+            responseDetails.Error.Should().BeEquivalentTo(new Dictionary<string, string[]>
             {
-                { $"{RuleTypeConst.Prefix}.SOME_RULE.Text", new[] { "Text can't be null" } }
+                { RuleTypeConst.KeyErrorDefault , new[] { "Text can't be null" } }
             });
         }
     }
