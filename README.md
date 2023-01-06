@@ -35,6 +35,23 @@ services
 
 Or use [automatic registration](https://docs.fluentvalidation.net/en/latest/di.html#automatic-registration).
 
+## Custom Status Code
+
+Currently, `JSM.FluentValidation.AspNet.AsyncFilter` supports the following status codes:
+
+- 400, Bad Request
+- 403, Forbidden (`ErrorCode.Forbidden`)
+- 404, Not Found (`ErrorCode.NotFound`)
+
+By default, every client error will return a 400 status code (Bad Request). If you want to customize the response, use FluentValidation's [WithErrorCode()](https://docs.fluentvalidation.net/en/latest/error-codes.html):
+
+```c#
+RuleFor(user => user)
+    .Must(user => user.Id != "321")
+    .WithMessage("Insufficient rights to access this resource")
+    .WithErrorCode(ErrorCode.Forbidden);
+```
+
 ## Customization
 
 If also possible to apply the filter only to controllers that contains the [`ApiControllerAttribute`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.apicontrollerattribute).
