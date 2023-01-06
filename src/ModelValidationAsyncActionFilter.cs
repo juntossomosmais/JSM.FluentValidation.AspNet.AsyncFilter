@@ -8,8 +8,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
+using JSM.FluentValidation.AspNet.AsyncFilter.ErrorResponse;
+using Microsoft.AspNetCore.Http;
 
 namespace JSM.FluentValidation.AspNet.AsyncFilter
 {
@@ -47,7 +52,8 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
         /// <summary>
         /// Validates values before the controller's action is invoked (before the route is executed).
         /// </summary>
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public async Task OnActionExecutionAsync(ActionExecutingContext context,
+            ActionExecutionDelegate next)
         {
             if (ShouldIgnoreFilter(context))
             {
@@ -59,8 +65,27 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
 
             if (!context.ModelState.IsValid)
             {
-                _logger.LogDebug("The request has model state errors, returning an error response.");
-                context.Result = _apiBehaviorOptions.InvalidModelStateResponseFactory(context);
+                _logger.LogDebug(
+                    "The request has model state errors, returning an error response.");
+                var responseStatusCode =
+                    ErrorResponseFactory.GetResponseStatusCode(context.ModelState);
+
+                if (responseStatusCode == HttpStatusCode.BadRequest)
+                {
+                    context.Result = _apiBehaviorOptions.InvalidModelStateResponseFactory(context);
+                    return;
+                }
+
+                var errorResponse =
+                    ErrorResponseFactory.CreateErrorResponse(context.ModelState,
+                        Activity.Current?.Id ?? context.HttpContext.TraceIdentifier);
+
+                context.HttpContext.Response.StatusCode = (int) responseStatusCode;
+                context.HttpContext.Response.ContentType = "application/json";
+
+                var responseBody = JsonSerializer.Serialize(errorResponse);
+                await context.HttpContext.Response.WriteAsync(responseBody);
+
                 return;
             }
 
@@ -97,7 +122,8 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
             return !hasApiControllerAttribute;
         }
 
-        private async Task ValidateEnumerableObjectsAsync(object value, ModelStateDictionary modelState)
+        private async Task ValidateEnumerableObjectsAsync(object value,
+            ModelStateDictionary modelState)
         {
             var underlyingType = value.GetType().GenericTypeArguments[0];
             var validator = GetValidator(underlyingType);
@@ -105,14 +131,17 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
             if (validator == null)
                 return;
 
-            foreach (var item in (IEnumerable)value)
+            foreach (var item in (IEnumerable) value)
             {
                 if (item is null)
                     continue;
                 var context = new ValidationContext<object>(item);
                 var result = await validator.ValidateAsync(context);
+                
+                var errorCode = result.Errors?.FirstOrDefault()?.ErrorCode;
 
-                result.AddToModelState(modelState, string.Empty);
+                result.AddToModelState(modelState,
+                    ErrorCode.AvailableCodes.Contains(errorCode) ? errorCode : string.Empty);
             }
         }
 
@@ -125,13 +154,17 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
 
             var context = new ValidationContext<object>(value);
             var result = await validator.ValidateAsync(context);
-            result.AddToModelState(modelState, string.Empty);
+
+            var errorCode = result.Errors?.FirstOrDefault()?.ErrorCode;
+
+            result.AddToModelState(modelState,
+                ErrorCode.AvailableCodes.Contains(errorCode) ? errorCode : string.Empty);
         }
 
         private IValidator GetValidator(Type targetType)
         {
             var validatorType = typeof(IValidator<>).MakeGenericType(targetType);
-            var validator = (IValidator)_serviceProvider.GetService(validatorType);
+            var validator = (IValidator) _serviceProvider.GetService(validatorType);
             return validator;
         }
 
@@ -139,4 +172,3 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
             type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type);
     }
 }
-
