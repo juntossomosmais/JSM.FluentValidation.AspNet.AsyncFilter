@@ -1,6 +1,6 @@
 namespace JSM.FluentValidation.AspNet.AsyncFilter.ErrorResponse
 {
-    public class ForbiddenResponse : IErrorResponse
+    internal class ForbiddenResponse : IErrorResponse
     {
         public ForbiddenResponse(string message, string traceparent)
         {

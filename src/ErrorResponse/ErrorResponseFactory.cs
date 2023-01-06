@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace JSM.FluentValidation.AspNet.AsyncFilter.ErrorResponse
 {
-    public static class ErrorResponseFactory
+    internal static class ErrorResponseFactory
     {
         public static IErrorResponse CreateErrorResponse(ModelStateDictionary modelState,
             string traceparent)

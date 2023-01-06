@@ -66,10 +66,12 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
             if (!context.ModelState.IsValid)
             {
                 _logger.LogDebug(
-                    "The request has model state errors, returning an error response.");
+                    "The request has model state errors, returning an error response");
                 var responseStatusCode =
                     ErrorResponseFactory.GetResponseStatusCode(context.ModelState);
 
+                // BadRequest responses will return the default response structure, only different
+                // status codes will be customized
                 if (responseStatusCode == HttpStatusCode.BadRequest)
                 {
                     context.Result = _apiBehaviorOptions.InvalidModelStateResponseFactory(context);
@@ -137,7 +139,7 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter
                     continue;
                 var context = new ValidationContext<object>(item);
                 var result = await validator.ValidateAsync(context);
-                
+
                 var errorCode = result.Errors?.FirstOrDefault()?.ErrorCode;
 
                 result.AddToModelState(modelState,

@@ -1,6 +1,6 @@
 namespace JSM.FluentValidation.AspNet.AsyncFilter.ErrorResponse
 {
-    public class NotFoundResponse : IErrorResponse
+    internal class NotFoundResponse : IErrorResponse
     {
         public NotFoundResponse(string message, string traceparent)
         {

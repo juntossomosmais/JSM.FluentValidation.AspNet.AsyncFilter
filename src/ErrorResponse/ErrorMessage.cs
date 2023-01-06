@@ -1,6 +1,6 @@
 namespace JSM.FluentValidation.AspNet.AsyncFilter.ErrorResponse
 {
-    public class ErrorMessage
+    internal class ErrorMessage
     {
         public string Msg { get; set; }
     }

@@ -1,6 +1,6 @@
 namespace JSM.FluentValidation.AspNet.AsyncFilter.ErrorResponse
 {
-    public interface IErrorResponse
+    internal interface IErrorResponse
     {
         public string Type { get; }
 
