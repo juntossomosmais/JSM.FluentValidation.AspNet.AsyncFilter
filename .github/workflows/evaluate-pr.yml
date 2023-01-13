@@ -18,9 +18,17 @@ jobs:
       - name: Install dotnet-sonarscanner
         run: |
           dotnet tool install --global dotnet-sonarscanner
+
       - name: Build the project, run all tests and publish to SonarCloud
+        if: github.event.pull_request.head.repo.full_name == github.repository
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./scripts/start-sonarcloud.sh ${{ secrets.SONAR_TOKEN }} ${{ github.sha }}
+
+      - name: Build the project and run all tests
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          dotnet build
+          ./scripts/start-tests.sh
