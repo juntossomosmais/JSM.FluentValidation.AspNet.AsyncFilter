@@ -1,21 +1,17 @@
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+
 namespace JSM.FluentValidation.AspNet.AsyncFilter.ErrorResponse
 {
-    internal class NotFoundResponse : IErrorResponse
+    internal class NotFoundResponse : TraceableProblemDetails
     {
         public NotFoundResponse(string message, string traceparent)
         {
+            Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4";
+            Title = ErrorCode.NotFound;
+            Status = 404;
+            Detail = message;
             TraceId = traceparent;
-            Error = new ErrorMessage { Msg = message };
         }
-
-        public string Type => "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.4";
-
-        public string Title => ErrorCode.NotFound;
-
-        public int Status => 404;
-
-        public string TraceId { get; set; }
-
-        public ErrorMessage Error { get; set; }
     }
 }

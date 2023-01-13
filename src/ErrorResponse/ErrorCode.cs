@@ -8,16 +8,21 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.ErrorResponse
     public static class ErrorCode
     {
         /// <summary>
-        /// 404 HTTP status code as per RFC 2616
+        /// 401 HTTP status code as per RFC 2616
         /// </summary>
-        public const string NotFound = "NOT_FOUND_ERROR";
+        public const string Unauthorized = "UNAUTHORIZED_ERROR";
         
         /// <summary>
         /// 403 HTTP status code as per RFC 2616
         /// </summary>
         public const string Forbidden = "FORBIDDEN_ERROR";
+        
+        /// <summary>
+        /// 404 HTTP status code as per RFC 2616
+        /// </summary>
+        public const string NotFound = "NOT_FOUND_ERROR";
 
         internal static readonly HashSet<string> AvailableCodes = new HashSet<string>()
-            {NotFound, Forbidden};
+            {Unauthorized, Forbidden, NotFound};
     }
 }

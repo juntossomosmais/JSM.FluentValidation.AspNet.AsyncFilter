@@ -247,10 +247,7 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
                     title = "NOT_FOUND_ERROR",
                     status = 404,
                     traceId = "0HMH5DLVSLJDP",
-                    error = new
-                    {
-                        msg = "User not found"
-                    }
+                    detail = "User not found"
                 },
                 options => options.Excluding(source => source.traceId)
             );
@@ -270,6 +267,8 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
             var response =
                 await Client.GetAsync($"{controller}/user-test-validator?id={payload.Id}");
 
+            var responseBla = await response.Content.ReadAsStringAsync();
+            
             // Assert
             response.Should().Be403Forbidden().And.BeAs(
                 new
@@ -278,10 +277,37 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
                     title = "FORBIDDEN_ERROR",
                     status = 403,
                     traceId = "",
-                    error = new
-                    {
-                        msg = "Insufficient rights to access this resource"
-                    }
+                    detail = "Insufficient rights to access this resource"
+                },
+                options => options.Excluding(source => source.traceId)
+            );
+        }
+        
+        [Theory(DisplayName =
+            "Should return Unauthorized when the user is not authorized to request that resource")]
+        [InlineData(ControllerWithApiAttributeEndpoint)]
+        [InlineData(ControllerWithoutApiAttributeEndpoint)]
+        public async Task OnActionExecutionAsync_RequestWithUnauthorizedUser_ReturnUnauthorized(
+            string controller)
+        {
+            // Arrange
+            var payload = new TestUser {Id = "432"};
+
+            // Act
+            var response =
+                await Client.GetAsync($"{controller}/user-test-validator?id={payload.Id}");
+
+            var responseBla = await response.Content.ReadAsStringAsync();
+            
+            // Assert
+            response.Should().Be401Unauthorized().And.BeAs(
+                new
+                {
+                    type = "https://datatracker.ietf.org/doc/html/rfc7235#section-3.1",
+                    title = "UNAUTHORIZED_ERROR",
+                    status = 401,
+                    traceId = "",
+                    detail = "Unauthorized user"
                 },
                 options => options.Excluding(source => source.traceId)
             );
