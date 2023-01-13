@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support;
-using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Extensions;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Models;
 using JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Startups;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
+using System.Net.Http.Json;
 
 namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 {
@@ -25,7 +25,7 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 
             // Act
             var response =
-                await Client.PostAsJsonAsync($"{ControllerWithoutApiAttributeEndpoint}/test-validator", payload);
+                await HttpClientJsonExtensions.PostAsJsonAsync(Client, $"{ControllerWithoutApiAttributeEndpoint}/test-validator", payload);
 
             // Assert
             response.Should().Be200Ok();
@@ -39,7 +39,7 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests
 
             // Act
             var response =
-                await Client.PostAsJsonAsync($"{ControllerWithApiAttributeEndpoint}/test-validator", payload);
+                await HttpClientJsonExtensions.PostAsJsonAsync(Client, $"{ControllerWithApiAttributeEndpoint}/test-validator", payload);
 
             // Assert
             response.Should().Be400BadRequest();
