@@ -18,5 +18,11 @@ namespace JSM.FluentValidation.AspNet.AsyncFilter.Tests.Support.Controllers
 
         [HttpPost("without-validation")]
         public IActionResult Post([FromBody] TestPayloadWithoutValidation request) => Ok();
+
+        [HttpGet("user-test-validator")]
+        public IActionResult Get([FromQuery] TestUser request)
+        {
+            return Ok();
+        }
     }
 }
